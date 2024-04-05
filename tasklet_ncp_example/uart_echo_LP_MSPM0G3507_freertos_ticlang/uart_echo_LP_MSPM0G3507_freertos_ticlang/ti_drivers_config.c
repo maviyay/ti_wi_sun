@@ -31,7 +31,7 @@
  */
 
 /*
- *  ============ ti_drivers_config.c =============
+ *  ============ ti_msp_dl_config.c =============
  *  Configured MSPM0 DriverLib module definitions
  *
  *  DO NOT EDIT - This file is generated for the LP_MSPM0G3507
@@ -92,6 +92,45 @@ SYSCONFIG_WEAK void SYSCFG_DL_SYSCTL_CLK_init(void)
     }
 }
 /*
+ *  =============================== DMA ===============================
+ */
+#include <ti/drivers/dma/DMAMSPM0.h>
+const uint_least8_t CONFIG_DMA_0               = 0;
+const uint_least8_t DMA_Count                  = CONFIG_DMA_COUNT;
+DMAMSPM0_Object DMAObject[CONFIG_DMA_CH_COUNT] = {
+    {.dmaTransfer =
+            {
+                .txTrigger              = DMA_UART0_TX_TRIG,
+                .txTriggerType          = DL_DMA_TRIGGER_TYPE_EXTERNAL,
+                .rxTrigger              = DMA_UART0_RX_TRIG,
+                .rxTriggerType          = DL_DMA_TRIGGER_TYPE_EXTERNAL,
+                .transferMode           = DL_DMA_SINGLE_TRANSFER_MODE,
+                .extendedMode           = DL_DMA_NORMAL_MODE,
+                .destWidth              = DL_DMA_WIDTH_BYTE,
+                .srcWidth               = DL_DMA_WIDTH_BYTE,
+                .destIncrement          = DL_DMA_ADDR_INCREMENT,
+                .dmaChannel             = 0,
+                .dmaTransferSource      = NULL,
+                .dmaTransferDestination = NULL,
+                .enableDMAISR           = false,
+            }},
+};
+
+static const DMAMSPM0_HWAttrs DMAMSP0HWAttrs[CONFIG_DMA_COUNT] = {
+    {
+        .dmaIsrFxn          = NULL,
+        .intPriority        = DEFAULT_DMA_PRIORITY,
+        .roundRobinPriority = 0,
+    },
+};
+const DMAMSPM0_Cfg DMAMSPM0_Config[CONFIG_DMA_COUNT] = {
+    {
+        &DMAMSP0HWAttrs[CONFIG_DMA_0],
+        &DMAObject[CONFIG_DMA_0],
+    },
+};
+
+/*
  *  =============================== UART ===============================
  */
 #include <ti/drivers/uart/UARTMSPM0G1X0X_G3X0X.h>
@@ -100,9 +139,7 @@ const uint_least8_t CONFIG_UART_0 = 0;
 const uint_least8_t UART_count    = CONFIG_UART_COUNT;
 
 static const UARTMSP_HWAttrs UARTMSPHWAttrs[CONFIG_UART_COUNT] = {
-    /* UART0 */
     {
-
         .regs          = UART0,
         .irq           = UART0_INT_IRQn,
         .rxPin         = IOMUX_PINCM22, /* 17 */
@@ -126,8 +163,9 @@ UART_Data_Object UARTObject[CONFIG_UART_COUNT] = {
                 .supportFxns        = &UARTMSPSupportFxns,
                 .buffersSupported   = true,
                 .eventsSupported    = false,
-                .callbacksSupported = false,
-                .dmaSupported       = false,
+                .callbacksSupported = true,
+                .dmaSupported       = true,
+                .noOfDMAChannels    = 1,
             },
         .buffersObject =
             {
@@ -145,6 +183,8 @@ const UART_Config UART_config[CONFIG_UART_COUNT] = {
         &UARTMSPHWAttrs[CONFIG_UART_0],
     },
 };
+
+/*****************************************************************************************************************/
 
 void UART0_IRQHandler(void)
 {

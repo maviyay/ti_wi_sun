@@ -52,14 +52,18 @@
 
 #include <stdio.h>
 #include <ti/devices/msp/msp.h>
-#include <ti/driverlib/dl_gpio.h>
 #include <ti/driverlib/driverlib.h>
 #include <ti/driverlib/m0p/dl_core.h>
 #include <ti/drivers/UART.h>
+#include <ti/drivers/dma/DMAMSPM0.h>
 #include <ti/drivers/uart/UARTMSPM0G1X0X_G3X0X.h>
 
 #define CONFIG_UART_COUNT 1
 #define CONFIG_UART_BUFFER_LENGTH 1
+
+#define CONFIG_DMA_COUNT 1
+#define CONFIG_DMA_CH_COUNT 1
+#define DEFAULT_DMA_PRIORITY 31
 
 extern const uint_least8_t CONFIG_UART_0;
 extern const uint_least8_t UART_count;
