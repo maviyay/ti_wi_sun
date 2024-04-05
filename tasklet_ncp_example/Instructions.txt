@@ -1,0 +1,6 @@
+1. Copy the mbed.zip mbed folder to the MSP SDK source/third_party/ folder, same as how it is in the CC13XX SDK.
+2. Copy the ti_wisunfan_third_party.zip ti_wisunfan folder to the MSP SDK source/third_party folder.
+3. Copy the ti_wisunfan.zip ti_wisunfan folder to the MSP SDK source/ti/ folder. (same folder name as in #2 but different contents and location)
+4. Unzip and copy the uart_echo zip file into your CCS workspace folder.
+5. If the project does not show up in CCS, restart CCS and/or use the Import-> CCS project from the right click menu to import into the workspace.
+6. Include and predefine symbols should already be a part of the project, but if you need to add them manually, they are available in the include_predefines.txt file.
